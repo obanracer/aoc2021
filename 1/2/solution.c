@@ -1,45 +1,45 @@
 #include <stdio.h>
 
-// returns eof
-int get_sum_and_set_next_pos(FILE* input, fpos_t* next_pos, int* sum) {
-    *sum = 0;
-    int measurement;
-
-    fscanf(input, "%d", &measurement);
-    *sum += measurement;
-
-    // save the next position to scan
-    fgetpos(input, next_pos);
-
-    fscanf(input, "%d", &measurement);
-    *sum += measurement;
-
-    fscanf(input, "%d", &measurement);
-    *sum += measurement;
-
-    return feof(input);
-}
-
 int main(void)
 {
     FILE* input = fopen("input.txt", "r");
 
     int counter = 0;
-    int p_sum = -1;
-    int n_sum = 0;
-    fpos_t pos;
 
-    int eof = 0;
-    while(1) {
-        if (eof) break;
-        eof = get_sum_and_set_next_pos(input, &pos, &n_sum);
-        printf("n_num: %d - new_pos: %d\n", n_sum, pos);
-        fsetpos(input, &pos);
-        if (p_sum != -1 && n_sum > p_sum) counter++;
-        p_sum = n_sum;
+    int first_measurement = 0;
+    int second_measurement = 0;
+    fpos_t first_next_pos;
+    fpos_t second_next_pos;
+
+    // SETUP ============================================================================
+
+    fscanf(input, "%d", &first_measurement); // get first value
+    fgetpos(input, &first_next_pos); // store next first pos
+
+    // move the file pointer to second measurement
+    fscanf(input, "%d", &second_measurement); // i dont actually care about this measurement yet
+    fscanf(input, "%d", &second_measurement); // i dont actually care about this measurement yet
+
+    fscanf(input, "%d", &second_measurement); // get second value
+    fgetpos(input, &second_next_pos); // store next second pos
+
+    if (second_measurement > first_measurement) counter++;
+    // ==================================================================================
+    
+    while (!feof(input))
+    {
+        fsetpos(input, &first_next_pos); // move to the first new measurement
+        fscanf(input, "%d", &first_measurement); // get first value
+        fgetpos(input, &first_next_pos); // store next first pos
+        
+        fsetpos(input, &second_next_pos); // move to the second new measurement
+        fscanf(input, "%d", &second_measurement); // get second value
+        fgetpos(input, &second_next_pos); // store next second pos
+
+        if (second_measurement > first_measurement) counter++;
     }
-
-    printf("%d larger sum of measurements.\n", counter);
+    
+    printf("%d larger sums of measurements.\n", counter);
     return fclose(input);
 }
 
