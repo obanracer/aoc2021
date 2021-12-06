@@ -11,7 +11,7 @@ int main(void)
     const unsigned int DOWN_UNITS_INDEX = 5;
     const unsigned int UP_UNITS_INDEX = 3;
 
-    FILE* input = fopen("input.txt", "rb");
+    FILE* input = fopen("../input.txt", "rb");
     
     int x = 0;
     int y = 0;

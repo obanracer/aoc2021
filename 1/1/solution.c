@@ -2,7 +2,7 @@
 
 int main(void)
 {
-    FILE* input = fopen("input.txt", "r");
+    FILE* input = fopen("../input.txt", "r");
 
     int p_measurement = -1;
     int n_measurement = 0;
