@@ -19,7 +19,6 @@ int main(void)
     char command;
     int units;
     fpos_t pos;
-    fgetpos(input, &pos);
 
     while ((command = fgetc(input)) != EOF)
     {
